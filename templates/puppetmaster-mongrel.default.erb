@@ -1,8 +1,5 @@
 # file managed by puppet
 
-# Hack to run puppetmasterd directly from a git checkout
-export RUBYLIB="/opt/puppet-dev-0.24.x/lib/"
-
 PORT=18141
 START="yes"
 <% if has_variable?('puppetmaster_confdir') -%>
