@@ -10,7 +10,7 @@
 #
 define puppet::config ($value='default value') {
 
-  augeas { "set puppet config parameter ${section}/${name}":
+  augeas { "set puppet config parameter '${section}/${name}' to '${value}'":
     changes => $value ? {
       'default value' => "rm  /files/etc/puppet/puppet.conf/${name}",
       default         => "set /files/etc/puppet/puppet.conf/${name} ${value}",
