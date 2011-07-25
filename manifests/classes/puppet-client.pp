@@ -5,7 +5,7 @@ class puppet::client {
       ""      => latest,
       default => $facter_version,
     },
-    require => [Exec["update pkg cache if necessary"], Package["lsb-release"]],
+    require => Package["lsb-release"],
     tag     => "install-puppet",
   }
 
@@ -14,7 +14,7 @@ class puppet::client {
       ""      => latest,
       default => $puppet_client_version,
     },
-    require => [Package["facter"], Exec["update pkg cache if necessary"]],
+    require => Package["facter"],
     tag     => "install-puppet",
   }
 
@@ -47,8 +47,6 @@ class puppet::client {
     require => Package["puppet"],
   }
 
-  file {"/etc/puppet/puppetd.conf": ensure => absent }
-
   if ( ! $puppet_environment ) {
     $puppet_environment = "production"
   }
@@ -59,51 +57,6 @@ class puppet::client {
     require => Package["puppet"],
     tag     => "install-puppet",
   }
-
-  file {"/var/run/puppet/":
-    ensure => directory,
-    owner  => "puppet",
-    group  => "puppet",
-  }
-
-  case $operatingsystem {
-
-    Debian: {
-
-      # remove legacy files
-      file { ["/etc/network/if-up.d/puppetd", "/etc/network/if-down.d/puppetd"]:
-        ensure => absent,
-      }
-
-      exec {"update pkg cache if necessary":
-        command => "true",
-        unless  => $puppet_client_version ? {
-          ""      => "true",
-          default => "apt-cache policy puppet | grep -q ${puppet_client_version}",
-        },
-        notify  => Exec["apt-get_update"],
-      }
-
-      exec {"update pkg cache if facter is not yet available":
-        command => "true",
-        unless  => $facter_version ? {
-          ""      => "true",
-          default => "apt-cache policy facter | grep -q ${facter_version}",
-        },
-        before  => Exec["update pkg cache if necessary"],
-        notify  => Exec["apt-get_update"],
-      }
-    }
-
-    default: {
-      # fake command just to satisfy dependencies
-      exec {"update pkg cache if necessary":
-        command => "true",
-        onlyif => "false",
-      }
-    }
-  }
-
 
   file{"/usr/local/bin/launch-puppet":
     ensure => present,
