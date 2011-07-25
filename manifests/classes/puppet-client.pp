@@ -51,11 +51,24 @@ class puppet::client {
     $puppet_environment = "production"
   }
 
-  file {"/etc/puppet/puppet.conf":
-    ensure => present,
-    content => template("puppet/puppet.conf.erb"),
-    require => Package["puppet"],
-    tag     => "install-puppet",
+  if (versioncmp($puppetversion, 2) > 0) {
+    $agent = "agent"
+  } else {
+    $agent = "puppetd"
+  }
+
+  puppet::config {
+    "main/ssldir":          value => "/var/lib/puppet/ssl";
+    "$agent/server":        value => $puppet_server;
+    "$agent/reportserver":  value => $puppet_reportserver;
+    "$agent/report":        value => "true";
+    "$agent/configtimeout": value => "3600";
+    "$agent/pluginsync":    value => "true";
+    "$agent/plugindest":    value => "/var/lib/puppet/lib";
+    "$agent/libdir":        value => "/var/lib/puppet/lib";
+    "$agent/pidfile":       value => "/var/run/puppet/puppetd.pid";
+    "$agent/environment":   value => $puppet_environment;
+    "$agent/diff_args":     value => "-u";
   }
 
   file{"/usr/local/bin/launch-puppet":
