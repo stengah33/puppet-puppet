@@ -1,5 +1,5 @@
 #
-# == Define puppet::config
+# == Definition: puppet::config
 #
 # Simple wrapper around augeas to set values to options in
 # /etc/puppet/puppet.conf
