@@ -58,9 +58,11 @@ class puppet::master::passenger inherits puppet::master::base {
   include ruby::passenger::apache
   include apache::ssl
 
-  apache::module { ["headers", "passenger"]:
-    ensure  => present,
-    require => Class["ruby::passenger::apache"],
+  if !defined( Apache::Module["headers"] ) {
+    apache::module {"headers": require => Class["ruby::passenger::apache"]}
+  }
+  if !defined( Apache::Module["passenger"] ) {
+    apache::module {"passenger": require => Class["ruby::passenger::apache"]}
   }
 
   apache::vhost-ssl { "puppetmasterd":
