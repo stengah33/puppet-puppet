@@ -1,1 +1,1 @@
-import "classes/*.pp"
+import "*/*.pp"

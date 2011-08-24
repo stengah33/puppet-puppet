@@ -1,4 +1,4 @@
-class puppet::master inherits puppet::master::base {
+class puppet::master::webrick inherits puppet::master::base {
 
   package {
     "libdbd-sqlite3-ruby": ensure => present;

@@ -42,13 +42,7 @@ class puppet::master::passenger inherits puppet::master::base {
     $puppetmaster_timeout = "600"
   }
 
-  # Puppet 0.24.x compatibility mode
-  if ( $puppetmaster_passenger_0_24 ) {
-    notice "Activate Puppet 0.24.x compatibility mode"
-    $rack_config_template = "puppet/config-0.24.ru.erb"
-  } else {
-    $rack_config_template = "puppet/config.ru.erb"
-  }
+  $rack_config_template = "puppet/config.ru.erb"
 
   # other useful variables:
   # $puppetmaster_confdir: will be passed to "puppetmasterd --confdir "
