@@ -21,7 +21,6 @@ class puppet::master::mongrel::standalone inherits puppet::master::base {
       "set PUPPETMASTERS 4",
     ],
     notify  => Service["puppetmaster"],
-    tag => "foo",
   }
 
 }
