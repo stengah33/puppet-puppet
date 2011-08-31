@@ -18,12 +18,8 @@ class puppet::master::base {
     },
   }
 
-  package { "rdoc":
-    ensure => present,
-    name   => $operatingsystem ? {
-      RedHat => "ruby-rdoc",
-      default => "rdoc",
-    },
+  if $operatingsystem =~ /RedHat|CentOS|Fedora/ {
+    package { "ruby-rdoc": ensure => present }
   }
 
   # Database
