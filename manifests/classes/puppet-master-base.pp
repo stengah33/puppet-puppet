@@ -1,20 +1,22 @@
 class puppet::master::base {
   include mysql::server
 
-  package { [
-    $operatingsystem ? {
-      Debian => "puppetmaster",
-      RedHat => "puppet-server",
+  package { "puppetmaster":
+    ensure => present,
+    name   => $operatingsystem ? {
+      /Debian|Ubuntu/        => "puppetmaster",
+      /RedHat|CentOS|Fedora/ => "puppet-server",
     },
-    "python-docutils", # used by puppetdoc -m pdf
-    ]: ensure => present,
   }
+
+  # used by puppetdoc -m pdf
+  package { "python-docutils": ensure => present }
 
   package { "ruby-mysql":
     ensure => present,
     name   => $operatingsystem ? {
-      Debian => "libdbd-mysql-ruby",
-      RedHat => "ruby-mysql",
+      /Debian|Ubuntu/        => "libdbd-mysql-ruby",
+      /RedHat|CentOS|Fedora/ => "ruby-mysql",
     },
   }
 
@@ -23,11 +25,11 @@ class puppet::master::base {
   }
 
   # Database
-  mysql::database{"puppet":
+  mysql::database { "puppet":
     ensure => present,
   }
 
-  mysql::rights{"Set rights for puppet database":
+  mysql::rights { "Set rights for puppet database":
     ensure   => present,
     database => "puppet",
     user     => "puppet",
