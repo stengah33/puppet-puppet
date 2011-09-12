@@ -1,30 +1,24 @@
 class puppet::client {
 
-  package {"facter":
-    ensure  => $facter_version ? {
-      ""      => latest,
-      default => $facter_version,
-    },
+  package { "facter":
+    ensure  => present,
     require => Package["lsb-release"],
   }
 
-  package {"puppet":
-    ensure  => $puppet_client_version ? {
-      ""      => latest,
-      default => $puppet_client_version,
-    },
+  package { "puppet":
+    ensure  => present,
     require => Package["facter"],
   }
 
-  package {"lsb-release":
-    name => $operatingsystem ? {
+  package { "lsb-release":
+    ensure => present,
+    name   => $operatingsystem ? {
       Debian => "lsb-release",
       Ubuntu => "lsb-release",
       Redhat => "redhat-lsb",
       fedora => "redhat-lsb",
       CentOS => "redhat-lsb",
     },
-    ensure => present,
   }
 
   service { "puppet":
