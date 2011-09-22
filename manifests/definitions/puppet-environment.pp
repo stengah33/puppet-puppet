@@ -16,7 +16,7 @@
 #   }
 #
 #
-define puppet::environment (ensure='present', $path) {
+define puppet::environment ($ensure='present', $path) {
 
   include puppet::environments
 
