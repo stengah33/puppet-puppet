@@ -1,4 +1,6 @@
-class puppet::client {
+class puppet::client::base {
+
+  #TODO: deal with facts passed as env vars
 
   package { "facter":
     ensure  => present,
@@ -21,25 +23,9 @@ class puppet::client {
     },
   }
 
-  service { "puppet":
-    ensure    => stopped,
-    enable    => false,
-    hasstatus => false,
-    pattern   => $operatingsystem ? {
-      Debian => "ruby /usr/sbin/puppetd -w 0",
-      Ubuntu => "ruby /usr/sbin/puppetd -w 0",
-      RedHat => "/usr/bin/ruby /usr/sbin/puppetd$",
-      CentOS => "/usr/bin/ruby /usr/sbin/puppetd$",
-    }
-  }
-
   user { "puppet":
     ensure => present,
     require => Package["puppet"],
-  }
-
-  if ( ! $puppet_environment ) {
-    $puppet_environment = "production"
   }
 
   if (versioncmp($puppetversion, 2) > 0) {
@@ -62,29 +48,4 @@ class puppet::client {
     "$agent/diff_args":     value => "-u";
   }
 
-  file{"/usr/local/bin/launch-puppet":
-    ensure => present,
-    mode => 755,
-    content => template("puppet/launch-puppet.erb"),
-  }
-
-  # Run puppetd with cron instead of having it hanging around and eating so
-  # much memory.
-  cron { "puppetd":
-    ensure  => present,
-    command => "/usr/local/bin/launch-puppet",
-    user    => 'root',
-    environment => "MAILTO=root",
-    minute  => $puppet_run_minutes ? {
-      ""      => ip_to_cron(2),
-      "*"     => undef,
-      default => $puppet_run_minutes,
-    },
-    hour    => $puppet_run_hours ? {
-      ""      => undef,
-      "*"     => undef,
-      default => $puppet_run_hours,
-    },
-    require => File["/usr/local/bin/launch-puppet"],
-  }         
 }
