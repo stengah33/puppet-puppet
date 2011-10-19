@@ -1,5 +1,7 @@
 class puppet::master::passenger inherits puppet::master::base {
 
+  include apache::params
+
   if ( ! $puppetmaster_ssldir ) {
     $puppetmaster_ssldir = "/etc/puppet/ssl"
   }
@@ -8,19 +10,9 @@ class puppet::master::passenger inherits puppet::master::base {
     $puppet_server = $fqdn
   }
 
-  if ( ! $wwwlogs ) {
-    $wwwlogs = $operatingsystem ? {
-      RedHat => "/var/log/httpd",
-      Debian => "/var/log/apache2",
-    }
-  }
-
   if ( ! $wwwroot ) {
     $rack_location = "/etc/puppet/rack"
-    $log_location = $operatingsystem ? {
-      RedHat => "/var/log/httpd",
-      Debian => "/var/log/apache2",
-    }
+    $log_location = $apache::params::log
   } else {
     $rack_location = "${wwwroot}/puppetmasterd/htdocs/rack"
     $log_location  = "${wwwroot}/puppetmasterd/logs"
