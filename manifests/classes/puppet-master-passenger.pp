@@ -50,7 +50,6 @@ class puppet::master::passenger inherits puppet::master::base {
 
   include ruby::gems
   include ruby::passenger::apache
-  include apache::ssl
 
   if !defined( Apache::Module["headers"] ) {
     apache::module {"headers": require => Class["ruby::passenger::apache"]}
@@ -105,20 +104,6 @@ class puppet::master::passenger inherits puppet::master::base {
       notify     => Service["apache"],
     }
 
-  }
-
-  # enable mpm-worker
-  case $operatingsystem {
-    RedHat: {
-      augeas { "enable httpd mpm-worker":
-        changes => "set /files/etc/sysconfig/httpd/HTTPD /usr/sbin/httpd.worker",
-        require => Package["apache"],
-        notify  => Service["apache"],
-      }
-    }
-    Debian: {
-      #TODO: install apache2-mpm-worker, deal with conflict in apache::debian
-    }
   }
 
 }
