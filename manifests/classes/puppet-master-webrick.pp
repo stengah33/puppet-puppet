@@ -1,14 +1,22 @@
 class puppet::master::webrick inherits puppet::master::base {
 
-  #TODO: this won't work for redhat/centos
   augeas { "configure puppetmaster startup variables":
-    context => "/files/etc/default/puppetmaster",
-    changes => [
-      "set PORT 8140",
-      "set START yes",
-      "set SERVERTYPE webrick",
-      "set PUPPETMASTERS 1",
-    ],
+    context => $operatingsystem ? {
+      /Debian|Ubuntu|kFreeBSD/ => "/files/etc/default/puppetmaster",
+      /RedHat|CentOS|Fedora/   => "/files/etc/sysconfig/puppetmaster",
+    },
+    changes => $operatingsystem ? {
+      /Debian|Ubuntu|kFreeBSD/ => [
+        "set PORT 8140",
+        "set START yes",
+        "set SERVERTYPE webrick",
+        "set PUPPETMASTERS 1",
+      ],
+      /RedHat|CentOS|Fedora/ => [
+        "set PUPPETMASTER_EXTRA_OPTS '\"--servertype=webrick\"'",
+        "rm  PUPPETMASTER_PORTS",
+      ],
+    },
     notify  => Service["puppetmaster"],
   }
 
