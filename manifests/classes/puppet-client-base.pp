@@ -15,11 +15,8 @@ class puppet::client::base {
   package { "lsb-release":
     ensure => present,
     name   => $operatingsystem ? {
-      Debian => "lsb-release",
-      Ubuntu => "lsb-release",
-      Redhat => "redhat-lsb",
-      fedora => "redhat-lsb",
-      CentOS => "redhat-lsb",
+      /Debian|Ubuntu|kFreeBSD/ => "lsb-release",
+      /RedHat|CentOS|Fedora/   => "redhat-lsb",
     },
   }
 
