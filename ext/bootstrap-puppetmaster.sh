@@ -12,7 +12,7 @@ TMPDIR=$(mktemp -d)
 
 (apt-get update && apt-get -y install lsb-release facter puppet git) || exit 1
 mkdir -p "${TMPDIR}/modules"
-git clone git://github.com/camptocamp/puppet-puppet.git "${TMPDIR}/modules/puppet"
+git clone http://github.com/camptocamp/puppet-puppet.git "${TMPDIR}/modules/puppet"
 
 mkdir -p $CA $REPO/{manifests,modules,site-modules}
 
