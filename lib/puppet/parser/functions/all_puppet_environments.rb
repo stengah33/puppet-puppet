@@ -6,9 +6,9 @@ module Puppet::Parser::Functions
     envs = []
 
     catalog.resources.each do |r|
-      if r.match(/^Puppet::Environment\[/) and
-         catalog.resource(r)[:ensure] != "absent"
-        envs << catalog.resource(r).title
+      if r.to_s.match(/^Puppet::Environment\[/) and
+         r[:ensure] != "absent"
+        envs << r.title
       end
     end
 
