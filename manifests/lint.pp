@@ -1,5 +1,10 @@
 class puppet::lint {
-  package { 'puppet-lint':
+  $package = $operatingsystem ? {
+    /Debian|Ubuntu/ => 'puppet-lint',
+    /RedHat|CentOS/ => 'rubygem-puppet-lint',
+  }
+
+  package { $package:
     ensure => latest,
   }
 
