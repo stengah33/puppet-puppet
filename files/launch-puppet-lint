@@ -1,0 +1,5 @@
+#!/bin/sh
+
+DIR=$1
+[[ -z $DIR ]] && DIR=.
+find "$DIR" -type f -name '*.pp' -exec puppet-lint --with-filename {} \;
