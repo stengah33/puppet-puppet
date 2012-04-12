@@ -19,24 +19,12 @@ define puppet::config (
     default         => $ensure,
   }
 
-  case $real_ensure {
-    present: {
-      $changes = "set ${name} ${value}"
-      $onlyif_cond = "size == 0"
-    }
-
-    absent: {
-      $changes = "rm ${name}"
-      $onlyif_cond = "size > 0"
-    }
-
-    default : { err ( "unknown ensure value ${ensure}") }
-  }
-
   augeas { "set puppet config parameter '${section}/${name}' to '${value}'":
     context => "/files/etc/puppet/puppet.conf",
-    changes => $changes,
-    onlyif  => "match ${name}[.='${value}'] ${onlyif_cond}",
+    changes => $real_ensure ? {
+      present => "set ${name} ${value}",
+      absent  => "rm ${name}",
+    },
     require => Package["puppet"],
   }
 
