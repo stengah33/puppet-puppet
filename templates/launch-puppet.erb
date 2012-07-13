@@ -21,14 +21,14 @@ export FACTER_<%= f %>
 
 if $(ping -q -c1 -w10 $SERVER &>/dev/null); then
   if $(tty > /dev/null); then
-    locked=0
     for flag in $FLAGS; do
       if [ -e $flag ]; then
-        locked=1
+        locked=$flag
+	message="$(cat $flag)"
       fi
     done
-    if [ $locked -eq 1 ]; then
-      echo 'WARNING! a lock was found.'
+    if [ ! -z $locked ]; then
+      echo "WARNING! a lock was found in $locked with message: $message"
       echo -n 'Do you really want to launch puppet? [N/y] '
       read iwant
       case $iwant in
