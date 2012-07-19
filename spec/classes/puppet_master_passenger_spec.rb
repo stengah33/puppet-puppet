@@ -1,7 +1,11 @@
 require 'spec_helper'
 
 describe 'puppet::master::passenger' do
-  describe 'When using defaults' do
+  describe 'When using defaults on Debian' do
+    let(:facts) { {
+      :operatingsystem => 'Debian'
+    } }
+
     it { should include_class('apache::params') }
     it { should include_class('ruby::gems') }
     it { should include_class('ruby::passenger::apache') }
