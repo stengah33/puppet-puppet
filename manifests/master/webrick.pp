@@ -1,4 +1,4 @@
-class puppet::master::webrick inherits puppet::master::base {
+class puppet::master::webrick inherits puppet::master {
 
   $context = $::operatingsystem ? {
     /Debian|Ubuntu|kFreeBSD/ => '/files/etc/default/puppetmaster',

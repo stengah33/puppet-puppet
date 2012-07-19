@@ -1,4 +1,4 @@
-class puppet::master::base {
+class puppet::master {
 
   $puppetmaster_pkg = $::operatingsystem ? {
     /Debian|Ubuntu/        => 'puppetmaster',

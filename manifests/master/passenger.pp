@@ -1,4 +1,4 @@
-class puppet::master::passenger inherits puppet::master::base {
+class puppet::master::passenger inherits puppet::master {
 
   include apache::params
 

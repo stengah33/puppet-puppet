@@ -1,4 +1,4 @@
-class puppet::master::mongrel::standalone inherits puppet::master::base {
+class puppet::master::mongrel::standalone inherits puppet::master {
 
   # TODO: make mongrel count configurable
 
