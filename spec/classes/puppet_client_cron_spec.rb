@@ -1,11 +1,14 @@
 require 'spec_helper'
 
 describe 'puppet::client::cron' do
+  # NOTE: it is not possible to test ip_to_cron()
+  # since it comes from the common module.
   describe 'When on Debian' do
     let(:facts) { {
       :operatingsystem    => 'Debian',
       :ipaddress          => '10.0.0.1',
       :puppet_server      => 'pm.example.com',
+      :puppet_run_minutes => '*',
     } }
 
     it do should contain_service('puppet').with(
