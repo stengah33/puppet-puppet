@@ -5,6 +5,7 @@ describe 'puppet::client::cron' do
     let(:facts) { {
       :operatingsystem    => 'Debian',
       :ipaddress          => '10.0.0.1',
+      :puppet_server      => 'pm.example.com',
     } }
 
     it do should contain_service('puppet').with(
