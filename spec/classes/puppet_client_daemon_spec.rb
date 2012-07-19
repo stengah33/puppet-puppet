@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe 'puppet::client::daemon' do
+  let(:facts) { { :operatingsystem     => 'Debian',
+                  :puppetversion       => '0.25.5',
+                  :puppet_server       => 'pm.example.com',
+                  :puppet_reportserver => 'reports.example.com',
+                  :puppet_environment  => 'someuser'
+              } } 
+
   it { should include_class('puppet::client::base') }
 
   it do should contain_service('puppet').with(
