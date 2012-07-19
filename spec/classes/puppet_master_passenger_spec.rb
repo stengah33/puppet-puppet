@@ -1,6 +1,18 @@
 require 'spec_helper'
 
 describe 'puppet::master::passenger' do
+  let(:pre_condition) { "
+class apache::params {}
+define apache::vhost-ssl($ensure='present', $config_content, $mode, $user) {}
+define apache::module($ensure='present') {}
+define apache::listen($ensure='present') {}
+
+class ruby::gems {}
+class ruby::passenger::apache {}
+    "
+  }
+
+
   describe 'When using defaults on Debian' do
     let(:facts) { {
       :operatingsystem => 'Debian'
