@@ -14,7 +14,7 @@ class puppet::client::base {
 
   package { "lsb-release":
     ensure => present,
-    name   => $operatingsystem ? {
+    name   => $::operatingsystem ? {
       /Debian|Ubuntu|kFreeBSD/ => "lsb-release",
       /RedHat|CentOS|Fedora/   => "redhat-lsb",
     },
@@ -25,7 +25,7 @@ class puppet::client::base {
     require => Package["puppet"],
   }
 
-  if (versioncmp($puppetversion, 2) > 0) {
+  if (versioncmp($::puppetversion, 2) > 0) {
     $agent = "agent"
   } else {
     $agent = "puppetd"
