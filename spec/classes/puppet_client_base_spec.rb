@@ -6,7 +6,7 @@ describe 'puppet::client::base' do
                     :puppetversion       => '0.25.5',
                     :puppet_server       => 'pm.example.com',
                     :puppet_reportserver => 'reports.example.com',
-                    :puppet_environment  => 'foobar'
+                    :puppet_environment  => 'someuser'
                 } } 
 
     it { should contain_package('facter').with_ensure('present') }
@@ -24,7 +24,7 @@ describe 'puppet::client::base' do
     it { should contain_puppet__config('puppetd/plugindest').with_value('/var/lib/puppet/lib') }
     it { should contain_puppet__config('puppetd/libdir').with_value('/var/lib/puppet/lib') }
     it { should contain_puppet__config('puppetd/pidfile').with_value('/var/run/puppet/puppetd.pid') }
-    it { should contain_puppet__config('puppetd/environment').with_value('foobar') }
+    it { should contain_puppet__config('puppetd/environment').with_value('someuser') }
     it { should contain_puppet__config('puppetd/diff_args').with_value('-u') }
   end
 end
