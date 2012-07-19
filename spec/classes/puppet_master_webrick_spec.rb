@@ -29,7 +29,7 @@ describe 'puppet::master::webrick' do
     it do should contain_augeas('configure puppetmaster startup variables').with(
       'context' => '/files/etc/sysconfig/puppetmaster',
       'changes' => [
-        'set PUPPETMASTER_EXTRA_OPTS "--servertype=webrick"',
+        'set PUPPETMASTER_EXTRA_OPTS \'"--servertype=webrick"\'',
         'rm  PUPPETMASTER_PORTS'
     ]) end
 
