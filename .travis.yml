@@ -1,6 +1,7 @@
 language: ruby
 rvm:
   - 1.8.7
+  - 1.9.2
 notifications:
   email: false
 env:
@@ -9,3 +10,7 @@ env:
 install:
   - gem install bundler
   - bundle update
+matrix:
+  exclude:
+    - rvm: 1.9.2
+      env: PUPPET_VERSION=2.6.17
