@@ -15,8 +15,8 @@ class puppet::client::cron {
   }
 
   file { "/usr/local/bin/launch-puppet":
-    ensure => present,
-    mode => 755,
+    ensure  => present,
+    mode    => '0755',
     content => template("puppet/launch-puppet.erb"),
   }
 

@@ -28,7 +28,7 @@ describe 'puppet::client::cron' do
       'command'     => '/usr/local/bin/launch-puppet',
       'user'        => 'root',
       'environment' => 'MAILTO=root',
-      'minute'      => 'unknown'
+      'minute'      => nil
     ) end
   end
 end
