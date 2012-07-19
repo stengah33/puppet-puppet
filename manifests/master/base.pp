@@ -1,68 +1,73 @@
 class puppet::master::base {
 
-  package { "puppetmaster":
+  $puppetmaster_pkg = $::operatingsystem ? {
+    /Debian|Ubuntu/        => 'puppetmaster',
+    /RedHat|CentOS|Fedora/ => 'puppet-server',
+  }
+
+  package {'puppetmaster':
     ensure => present,
-    name   => $operatingsystem ? {
-      /Debian|Ubuntu/        => "puppetmaster",
-      /RedHat|CentOS|Fedora/ => "puppet-server",
-    },
+    name   => $puppetmaster_pkg,
   }
 
   # used by puppetdoc -m pdf
-  package { "python-docutils": ensure => present }
-
-  if $operatingsystem =~ /RedHat|CentOS|Fedora/ {
-    package { "ruby-rdoc": ensure => present }
+  package {'python-docutils':
+    ensure => present
   }
 
-  if (versioncmp($puppetversion, 2) > 0) {
-    $master = "master"
+  if $::operatingsystem =~ /RedHat|CentOS|Fedora/ {
+    package {'ruby-rdoc': ensure => present }
+  }
+
+  if (versioncmp($::puppetversion, 2) > 0) {
+    $master = 'master'
   } else {
-    $master = "puppetmasterd"
+    $master = 'puppetmasterd'
   }
 
-  case $puppetdbtype {
-    "mysql": {
+  case $::puppetdbtype {
+    'mysql': {
+      $mysql = $::operatingsystem ? {
+        /Debian|Ubuntu/        => 'libdbd-mysql-ruby',
+        /RedHat|CentOS|Fedora/ => 'ruby-mysql',
+      }
 
-      package { "ruby-mysql":
+      package {'ruby-mysql':
         ensure => present,
-        name   => $operatingsystem ? {
-          /Debian|Ubuntu/        => "libdbd-mysql-ruby",
-          /RedHat|CentOS|Fedora/ => "ruby-mysql",
-        },
+        name   => $mysql,
       }
 
       puppet::config {
-        "${master}/dbadapter":    value => "mysql";
-        "${master}/storeconfigs": value => "true";
-        "${master}/dbmigrate":    value => "true";
-        "${master}/dbserver":     value => $puppetdbhost;
-        "${master}/dbname":       value => $puppetdbname;
-        "${master}/dbuser":       value => $puppetdbuser;
-        "${master}/dbpassword":   value => $puppetdbpw;
+        "${master}/dbadapter":    value => 'mysql';
+        "${master}/storeconfigs": value => true;
+        "${master}/dbmigrate":    value => true;
+        "${master}/dbserver":     value => $::puppetdbhost;
+        "${master}/dbname":       value => $::puppetdbname;
+        "${master}/dbuser":       value => $::puppetdbuser;
+        "${master}/dbpassword":   value => $::puppetdbpw;
       }
     }
 
-    "sqlite": {
-      package { ["sqlite3", "libsqlite3-ruby"]:
+    'sqlite': {
+      package { ['sqlite3', 'libsqlite3-ruby']:
         ensure => present,
       }
 
       puppet::config {
-        "${master}/dbadapter":    value => "sqlite3";
-        "${master}/storeconfigs": value => "true";
-        "${master}/dbmigrate":    value => "true";
-        "${master}/dbserver":     value => $puppetdbhost;
-        "${master}/dbname":       value => $puppetdbname;
-        "${master}/dbuser":       value => $puppetdbuser;
-        "${master}/dbpassword":   value => $puppetdbpw;
+        "${master}/dbadapter":    value => 'sqlite3';
+        "${master}/storeconfigs": value => true;
+        "${master}/dbmigrate":    value => true;
+        "${master}/dbserver":     value => $::puppetdbhost;
+        "${master}/dbname":       value => $::puppetdbname;
+        "${master}/dbuser":       value => $::puppetdbuser;
+        "${master}/dbpassword":   value => $::puppetdbpw;
       }
     }
 
     default: {
       puppet::config {
         "${master}/dbadapter":    ;
-        "${master}/storeconfigs": value => "false";
+        "${master}/storeconfigs": value => false;
         "${master}/dbmigrate":    ;
         "${master}/dbserver":     ;
         "${master}/dbname":       ;
