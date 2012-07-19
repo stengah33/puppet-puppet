@@ -53,13 +53,13 @@ describe 'puppet::master::base' do
     it { should contain_package('sqlite3').with_ensure('present') }
     it { should contain_package('libsqlite3-ruby').with_ensure('present') }
 
-    it { should contain_puppet__config('puppetmasterd/dbadapter').with_value('sqlite3') }
-    it { should contain_puppet__config('puppetmasterd/storeconfigs').with_value('true') }
-    it { should contain_puppet__config('puppetmasterd/dbmigrate').with_value('true') }
-    it { should contain_puppet__config('puppetmasterd/dbserver').with_value('db.example.com') }
-    it { should contain_puppet__config('puppetmasterd/dbname').with_value('puppetdb') }
-    it { should contain_puppet__config('puppetmasterd/dbuser').with_value('puppet') }
-    it { should contain_puppet__config('puppetmasterd/dbpassword').with_value('P@S5w0Rd') }
+    it { should contain_puppet__config('master/dbadapter').with_value('sqlite3') }
+    it { should contain_puppet__config('master/storeconfigs').with_value('true') }
+    it { should contain_puppet__config('master/dbmigrate').with_value('true') }
+    it { should contain_puppet__config('master/dbserver').with_value('db.example.com') }
+    it { should contain_puppet__config('master/dbname').with_value('puppetdb') }
+    it { should contain_puppet__config('master/dbuser').with_value('puppet') }
+    it { should contain_puppet__config('master/dbpassword').with_value('P@S5w0Rd') }
   end
 
   describe 'When no puppetdbtype on RedHat with puppet 2.6.17' do
