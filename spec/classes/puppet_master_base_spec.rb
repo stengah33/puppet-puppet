@@ -69,12 +69,12 @@ describe 'puppet::master::base' do
       :puppetdbtype    => nil,
     } }
 
-    it { should contain_puppet__config('puppetmasterd/dbadapter').with_value(nil) }
-    it { should contain_puppet__config('puppetmasterd/storeconfigs').with_value('false') }
-    it { should contain_puppet__config('puppetmasterd/dbmigrate').with_value(nil) }
-    it { should contain_puppet__config('puppetmasterd/dbserver').with_value(nil) }
-    it { should contain_puppet__config('puppetmasterd/dbname').with_value(nil) }
-    it { should contain_puppet__config('puppetmasterd/dbuser').with_value(nil) }
-    it { should contain_puppet__config('puppetmasterd/dbpassword').with_value(nil) }
+    it { should contain_puppet__config('master/dbadapter').with_value(nil) }
+    it { should contain_puppet__config('master/storeconfigs').with_value('false') }
+    it { should contain_puppet__config('master/dbmigrate').with_value(nil) }
+    it { should contain_puppet__config('master/dbserver').with_value(nil) }
+    it { should contain_puppet__config('master/dbname').with_value(nil) }
+    it { should contain_puppet__config('master/dbuser').with_value(nil) }
+    it { should contain_puppet__config('master/dbpassword').with_value(nil) }
   end
 end
