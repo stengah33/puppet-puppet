@@ -12,7 +12,10 @@ describe 'puppet::master::base' do
       :puppetdbpw      => 'P@S5w0Rd',
     } }
 
-    it { should contain_package('puppetmaster').with_ensure('present') }
+    it do should contain_package('puppetmaster').with(
+      'ensure' => 'present',
+      'name'   => 'puppetmaster'
+    ) end
     it { should contain_package('python-docutils').with_ensure('present') }
 
     it do should contain_package('ruby-mysql').with(
@@ -21,7 +24,7 @@ describe 'puppet::master::base' do
     ) end
 
     it { should contain_puppet__config('puppetmasterd/dbadapter').with_value('mysql') }
-    it { should contain_puppet__config('puppetmasterd/sotreconfigs').with_value('true') }
+    it { should contain_puppet__config('puppetmasterd/storeconfigs').with_value('true') }
     it { should contain_puppet__config('puppetmasterd/dbmigrate').with_value('true') }
     it { should contain_puppet__config('puppetmasterd/dbserver').with_value('db.example.com') }
     it { should contain_puppet__config('puppetmasterd/dbname').with_value('puppetdb') }
@@ -40,7 +43,10 @@ describe 'puppet::master::base' do
       :puppetdbpw      => 'P@S5w0Rd',
     } }
 
-    it { should contain_package('puppet-server').with_ensure('present') }
+    it do should contain_package('puppetmaster').with(
+      'ensure' => 'present',
+      'name'   => 'puppet-server'
+    ) end
     it { should contain_package('python-docutils').with_ensure('present') }
     it { should contain_package('ruby-rdoc').with_ensure('present') }
 
@@ -48,7 +54,7 @@ describe 'puppet::master::base' do
     it { should contain_package('libsqlite3-ruby').with_ensure('present') }
 
     it { should contain_puppet__config('puppetmasterd/dbadapter').with_value('sqlite3') }
-    it { should contain_puppet__config('puppetmasterd/sotreconfigs').with_value('true') }
+    it { should contain_puppet__config('puppetmasterd/storeconfigs').with_value('true') }
     it { should contain_puppet__config('puppetmasterd/dbmigrate').with_value('true') }
     it { should contain_puppet__config('puppetmasterd/dbserver').with_value('db.example.com') }
     it { should contain_puppet__config('puppetmasterd/dbname').with_value('puppetdb') }
