@@ -20,7 +20,7 @@ describe 'puppet::client::cron' do
       'mode'    => '0755'
     ) end
 
-    id do should contain_cron('puppetd').with(
+    it do should contain_cron('puppetd').with(
       'ensure'      => 'present',
       'command'     => '/usr/local/bin/launch-puppet',
       'user'        => 'root',
