@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'puppet::master::base' do
+describe 'puppet::master' do
   describe 'When on Debian with puppet 0.25.5 and mysql' do
     let(:facts) { {
       :operatingsystem => 'Debian',

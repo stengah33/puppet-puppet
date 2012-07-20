@@ -6,8 +6,7 @@
 # it's already included in definitions/puppet-environment.pp.
 #
 class puppet::environments {
-
-  puppet::config { "main/environments":
+  puppet::config {'main/environments':
     value => all_puppet_environments(),
   }
 }

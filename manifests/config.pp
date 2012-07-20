@@ -19,13 +19,15 @@ define puppet::config (
     default         => $ensure,
   }
 
-  augeas { "set puppet config parameter '${name}' to '${value}'":
-    context => "/files/etc/puppet/puppet.conf",
-    changes => $real_ensure ? {
-      present => "set ${name} ${value}",
-      absent  => "rm ${name}",
-    },
-    require => Package["puppet"],
+  $changes = $real_ensure ? {
+    present => "set ${name} ${value}",
+    absent  => "rm ${name}",
+  }
+
+  augeas {"set puppet config parameter '${name}' to '${value}'":
+    context => '/files/etc/puppet/puppet.conf',
+    changes => $changes,
+    require => Package['puppet'],
   }
 
 }

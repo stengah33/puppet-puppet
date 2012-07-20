@@ -16,7 +16,7 @@
 #   }
 #
 #
-define puppet::environment ($ensure='present', $path) {
+define puppet::environment ($path, $ensure='present') {
 
   include puppet::environments
 
@@ -25,17 +25,24 @@ define puppet::environment ($ensure='present', $path) {
   case $ensure {
     'present': {
       puppet::config {
-        "${name}/modulepath":  value => "${dirname}/modules:${dirname}/site-modules";
-        "${name}/manifestdir": value => "${dirname}/manifests";
-        "${name}/manifest":    value => "${dirname}/manifests/site.pp";
+        "${name}/modulepath":
+          value => "${dirname}/modules:${dirname}/site-modules";
+        "${name}/manifestdir":
+          value => "${dirname}/manifests";
+        "${name}/manifest":
+          value => "${dirname}/manifests/site.pp";
       }
     }
 
     'absent': {
       augeas { "remove environment ${name}":
         changes => "rm /files/etc/puppet/puppet.conf/${name}",
-        require => Package["puppet"],
+        require => Package['puppet'],
       }
+    }
+
+    default: {
+      fail ("Wrong ensure parameter: ${ensure}")
     }
   }
 }
