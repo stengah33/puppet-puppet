@@ -50,7 +50,7 @@ class puppet::master::passenger inherits puppet::master {
     apache::module {'passenger': require => Class['ruby::passenger::apache']}
   }
 
-  apache::vhost-ssl {'puppetmasterd':
+  apache::vhost::ssl {'puppetmasterd':
     config_content => template('puppet/vhost-passenger.conf.erb'),
     mode           => '2755',
     user           => 'root',
