@@ -10,12 +10,14 @@ else
 end
 
 VARS = {
-  'Debian' => {
+  'Debian'             => {
     'puppetmaster_pkg' => 'puppetmaster',
+    'lsb_release'      => 'lsb-release',
   },
 
   'RedHat' => {
     'puppetmaster_pkg' => 'puppet-server',
+    'lsb_release'      => 'redhat-lsb',
   },
 }
 VARS['Ubuntu'] = VARS['Debian']
