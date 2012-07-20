@@ -20,25 +20,21 @@ class puppet::client::cron {
     content => template('puppet/launch-puppet.erb'),
   }
 
-  $cron_minute = $::puppet_run_minutes ? {
-      ''      => ip_to_cron(2),
-      '*'     => undef,
-      default => $::puppet_run_minutes,
-  }
-
-  $cron_hour = $::puppet_cron_hours ? {
-      ''      => undef,
-      '*'     => undef,
-      default => $::puppet_run_hours,
-  }
-
   cron {'puppetd':
     ensure      => present,
     command     => '/usr/local/bin/launch-puppet',
     user        => 'root',
     environment => 'MAILTO=root',
-    minute      => $cron_minute,
-    hour        => $cron_hour,
-    require     => File['/usr/local/bin/launch-puppet'],
+    minute      => $::puppet_run_minutes ? {
+      ''        => ip_to_cron(2),
+      '*'       => undef,
+      default   => $::puppet_run_minutes,
+    },
+    hour      => $::puppet_run_hours ? {
+      ''      => undef,
+      '*'     => undef,
+      default => $::puppet_run_hours,
+    },
+    require   => File['/usr/local/bin/launch-puppet'],
   }
 }
