@@ -1,80 +1,96 @@
 require 'spec_helper'
 
 describe 'puppet::master' do
-  describe 'When on Debian with puppet 0.25.5 and mysql' do
-    let(:facts) { {
-      :operatingsystem => 'Debian',
-      :puppetversion   => '0.25.5',
-      :puppetdbtype    => 'mysql',
-      :puppetdbhost    => 'db.example.com',
-      :puppetdbname    => 'puppetdb',
-      :puppetdbuser    => 'puppet',
-      :puppetdbpw      => 'P@S5w0Rd',
-    } }
 
-    it do should contain_package('puppetmaster').with(
-      'ensure' => 'present',
-      'name'   => 'puppetmaster'
-    ) end
-    it { should contain_package('python-docutils').with_ensure('present') }
-
-    it do should contain_package('ruby-mysql').with(
-      'ensure' => 'present',
-      'name'   => 'libdbd-mysql-ruby'
-    ) end
-
-    it { should contain_puppet__config('puppetmasterd/dbadapter').with_value('mysql') }
-    it { should contain_puppet__config('puppetmasterd/storeconfigs').with_value('true') }
-    it { should contain_puppet__config('puppetmasterd/dbmigrate').with_value('true') }
-    it { should contain_puppet__config('puppetmasterd/dbserver').with_value('db.example.com') }
-    it { should contain_puppet__config('puppetmasterd/dbname').with_value('puppetdb') }
-    it { should contain_puppet__config('puppetmasterd/dbuser').with_value('puppet') }
-    it { should contain_puppet__config('puppetmasterd/dbpassword').with_value('P@S5w0Rd') }
+  if (Gem::Version.new(PUPPET_VERSION) > Gem::Version.new(2))
+    master = 'master'
+  else
+    master = 'puppetmasterd'
   end
 
-  describe 'When on RedHat with puppet 2.6.17 and sqlite' do
-    let(:facts) { {
-      :operatingsystem => 'RedHat',
-      :puppetversion   => '2.6.17',
-      :puppetdbtype    => 'sqlite',
-      :puppetdbhost    => 'db.example.com',
-      :puppetdbname    => 'puppetdb',
-      :puppetdbuser    => 'puppet',
-      :puppetdbpw      => 'P@S5w0Rd',
-    } }
+  OSES.each do |os|
+    describe "When on #{os} with mysql" do
+      let(:facts) { {
+        :operatingsystem => os,
+        :puppetversion   => PUPPET_VERSION,
+        :puppetdbtype    => 'mysql',
+        :puppetdbhost    => 'db.example.com',
+        :puppetdbname    => 'puppetdb',
+        :puppetdbuser    => 'puppet',
+        :puppetdbpw      => 'P@S5w0Rd',
+      } }
 
-    it do should contain_package('puppetmaster').with(
-      'ensure' => 'present',
-      'name'   => 'puppet-server'
-    ) end
-    it { should contain_package('python-docutils').with_ensure('present') }
-    it { should contain_package('ruby-rdoc').with_ensure('present') }
+      it do should contain_package('puppetmaster').with(
+        'ensure' => 'present',
+        'name'   => VARS[os]['puppetmaster_pkg']
+      ) end
+      it { should contain_package('python-docutils').with_ensure('present') }
 
-    it { should contain_package('sqlite3').with_ensure('present') }
-    it { should contain_package('libsqlite3-ruby').with_ensure('present') }
+      if ['RedHat', 'CentOS', 'Fedora'].include? os
+        it { should contain_package('ruby-rdoc').with_ensure('present') }
+      end
 
-    it { should contain_puppet__config('master/dbadapter').with_value('sqlite3') }
-    it { should contain_puppet__config('master/storeconfigs').with_value('true') }
-    it { should contain_puppet__config('master/dbmigrate').with_value('true') }
-    it { should contain_puppet__config('master/dbserver').with_value('db.example.com') }
-    it { should contain_puppet__config('master/dbname').with_value('puppetdb') }
-    it { should contain_puppet__config('master/dbuser').with_value('puppet') }
-    it { should contain_puppet__config('master/dbpassword').with_value('P@S5w0Rd') }
-  end
+      it do should contain_package('ruby-mysql').with(
+        'ensure' => 'present',
+        'name'   => 'libdbd-mysql-ruby'
+      ) end
 
-  describe 'When no puppetdbtype on RedHat with puppet 2.6.17' do
-    let(:facts) { {
-      :operatingsystem => 'RedHat',
-      :puppetversion   => '2.6.17',
-      :puppetdbtype    => nil,
-    } }
+      it { should contain_puppet__config("#{master}/dbadapter").with_value('mysql') }
+      it { should contain_puppet__config("#{master}/storeconfigs").with_value('true') }
+      it { should contain_puppet__config("#{master}/dbmigrate").with_value('true') }
+      it { should contain_puppet__config("#{master}/dbserver").with_value('db.example.com') }
+      it { should contain_puppet__config("#{master}/dbname").with_value('puppetdb') }
+      it { should contain_puppet__config("#{master}/dbuser").with_value('puppet') }
+      it { should contain_puppet__config("#{master}/dbpassword").with_value('P@S5w0Rd') }
+    end
 
-    it { should contain_puppet__config('master/dbadapter').with_value('default value') }
-    it { should contain_puppet__config('master/storeconfigs').with_value('false') }
-    it { should contain_puppet__config('master/dbmigrate').with_value('default value') }
-    it { should contain_puppet__config('master/dbserver').with_value('default value') }
-    it { should contain_puppet__config('master/dbname').with_value('default value') }
-    it { should contain_puppet__config('master/dbuser').with_value('default value') }
-    it { should contain_puppet__config('master/dbpassword').with_value('default value') }
+    describe "When on #{os} with sqlite" do
+      let(:facts) { {
+        :operatingsystem => os,
+        :puppetversion   => PUPPET_VERSION,
+        :puppetdbtype    => 'sqlite',
+        :puppetdbhost    => 'db.example.com',
+        :puppetdbname    => 'puppetdb',
+        :puppetdbuser    => 'puppet',
+        :puppetdbpw      => 'P@S5w0Rd',
+      } }
+
+      it do should contain_package('puppetmaster').with(
+        'ensure' => 'present',
+        'name'   => VARS[os]['puppetmaster_pkg']
+      ) end
+      it { should contain_package('python-docutils').with_ensure('present') }
+
+      if ['RedHat', 'CentOS', 'Fedora'].include? os
+        it { should contain_package('ruby-rdoc').with_ensure('present') }
+      end
+
+      it { should contain_package('sqlite3').with_ensure('present') }
+      it { should contain_package('libsqlite3-ruby').with_ensure('present') }
+
+      it { should contain_puppet__config("#{master}/dbadapter").with_value('sqlite3') }
+      it { should contain_puppet__config("#{master}/storeconfigs").with_value('true') }
+      it { should contain_puppet__config("#{master}/dbmigrate").with_value('true') }
+      it { should contain_puppet__config("#{master}/dbserver").with_value('db.example.com') }
+      it { should contain_puppet__config("#{master}/dbname").with_value('puppetdb') }
+      it { should contain_puppet__config("#{master}/dbuser").with_value('puppet') }
+      it { should contain_puppet__config("#{master}/dbpassword").with_value('P@S5w0Rd') }
+    end
+
+    describe "When on #{os} with no puppetdbtype" do
+      let(:facts) { {
+        :operatingsystem => os,
+        :puppetversion   => PUPPET_VERSION,
+        :puppetdbtype    => nil,
+      } }
+
+      it { should contain_puppet__config("#{master}/dbadapter").with_value('default value') }
+      it { should contain_puppet__config("#{master}/storeconfigs").with_value('false') }
+      it { should contain_puppet__config("#{master}/dbmigrate").with_value('default value') }
+      it { should contain_puppet__config("#{master}/dbserver").with_value('default value') }
+      it { should contain_puppet__config("#{master}/dbname").with_value('default value') }
+      it { should contain_puppet__config("#{master}/dbuser").with_value('default value') }
+      it { should contain_puppet__config("#{master}/dbpassword").with_value('default value') }
+    end
   end
 end

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe 'puppet::client::base' do
-  describe 'When on Debian and puppet 0.25.5' do
+  describe 'When on Debian' do
     let(:facts) { { :operatingsystem     => 'Debian',
-                    :puppetversion       => '0.25.5',
+                    :puppetversion       => PUPPET_VERSION,
                     :puppet_server       => 'pm.example.com',
                     :puppet_reportserver => 'reports.example.com',
                     :puppet_environment  => 'someuser'
