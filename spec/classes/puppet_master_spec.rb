@@ -32,7 +32,7 @@ describe 'puppet::master' do
 
       it do should contain_package('ruby-mysql').with(
         'ensure' => 'present',
-        'name'   => 'libdbd-mysql-ruby'
+        'name'   => VARS[os]['ruby_mysql']
       ) end
 
       it { should contain_puppet__config("#{master}/dbadapter").with_value('mysql') }
