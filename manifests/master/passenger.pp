@@ -10,7 +10,7 @@ class puppet::master::passenger inherits puppet::master {
     $puppet_server = $::fqdn
   }
 
-  if ( ! $::wwwroot ) {
+  if ( ! $wwwroot ) {
     $rack_location = '/etc/puppet/rack'
     $log_location = $apache::params::log
   } else {

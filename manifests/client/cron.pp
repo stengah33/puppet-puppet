@@ -25,15 +25,15 @@ class puppet::client::cron {
     command     => '/usr/local/bin/launch-puppet',
     user        => 'root',
     environment => 'MAILTO=root',
-    minute      => $::puppet_run_minutes ? {
+    minute      => $puppet_run_minutes ? {
       ''        => ip_to_cron(2),
       '*'       => undef,
-      default   => $::puppet_run_minutes,
+      default   => $puppet_run_minutes,
     },
-    hour      => $::puppet_run_hours ? {
+    hour      => $puppet_run_hours ? {
       ''      => undef,
       '*'     => undef,
-      default => $::puppet_run_hours,
+      default => $puppet_run_hours,
     },
     require   => File['/usr/local/bin/launch-puppet'],
   }

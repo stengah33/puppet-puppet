@@ -25,7 +25,7 @@ class puppet::master {
     $master = 'puppetmasterd'
   }
 
-  case $::puppetdbtype {
+  case $puppetdbtype {
     'mysql': {
       $mysql = $::operatingsystem ? {
         /Debian|Ubuntu/        => 'libdbd-mysql-ruby',
@@ -41,10 +41,10 @@ class puppet::master {
         "${master}/dbadapter":    value => 'mysql';
         "${master}/storeconfigs": value => true;
         "${master}/dbmigrate":    value => true;
-        "${master}/dbserver":     value => $::puppetdbhost;
-        "${master}/dbname":       value => $::puppetdbname;
-        "${master}/dbuser":       value => $::puppetdbuser;
-        "${master}/dbpassword":   value => $::puppetdbpw;
+        "${master}/dbserver":     value => $puppetdbhost;
+        "${master}/dbname":       value => $puppetdbname;
+        "${master}/dbuser":       value => $puppetdbuser;
+        "${master}/dbpassword":   value => $puppetdbpw;
       }
     }
 
@@ -57,10 +57,10 @@ class puppet::master {
         "${master}/dbadapter":    value => 'sqlite3';
         "${master}/storeconfigs": value => true;
         "${master}/dbmigrate":    value => true;
-        "${master}/dbserver":     value => $::puppetdbhost;
-        "${master}/dbname":       value => $::puppetdbname;
-        "${master}/dbuser":       value => $::puppetdbuser;
-        "${master}/dbpassword":   value => $::puppetdbpw;
+        "${master}/dbserver":     value => $puppetdbhost;
+        "${master}/dbname":       value => $puppetdbname;
+        "${master}/dbuser":       value => $puppetdbuser;
+        "${master}/dbpassword":   value => $puppetdbpw;
       }
     }
 

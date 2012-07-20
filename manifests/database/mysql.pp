@@ -8,9 +8,9 @@ class puppet::database::mysql {
 
   mysql::rights {'Set rights for puppet database':
     host     => '%', #TODO: allow only puppetmasters.
-    database => $::puppetdbname,
-    user     => $::puppetdbuser,
-    password => $::puppetdbpw,
+    database => $puppetdbname,
+    user     => $puppetdbuser,
+    password => $puppetdbpw,
   }
 
 }

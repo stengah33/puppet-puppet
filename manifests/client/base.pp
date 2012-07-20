@@ -35,15 +35,15 @@ class puppet::client::base {
 
   puppet::config {
     'main/ssldir':          value => '/var/lib/puppet/ssl';
-    "$agent/server":        value => $::puppet_server;
-    "$agent/reportserver":  value => $::puppet_reportserver;
+    "$agent/server":        value => $puppet_server;
+    "$agent/reportserver":  value => $puppet_reportserver;
     "$agent/report":        value => true;
     "$agent/configtimeout": value => '3600';
     "$agent/pluginsync":    value => true;
     "$agent/plugindest":    value => '/var/lib/puppet/lib';
     "$agent/libdir":        value => '/var/lib/puppet/lib';
     "$agent/pidfile":       value => '/var/run/puppet/puppetd.pid';
-    "$agent/environment":   value => $::puppet_environment;
+    "$agent/environment":   value => $puppet_environment;
     "$agent/diff_args":     value => '-u';
   }
 
