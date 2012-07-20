@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'puppet::master::passenger' do
   let(:pre_condition) { "
 class apache::params {}
-define apache::vhost-ssl($ensure='present', $config_content, $mode, $user) {}
+define apache::vhost::ssl($ensure='present', $config_content, $mode, $user) {}
 define apache::module($ensure='present') {}
 define apache::listen($ensure='present') {}
 
@@ -24,7 +24,7 @@ class ruby::passenger::apache {}
 
     it { should contain_apache__module('passenger') }
 
-    it do should contain_apache__vhost-ssl('puppetmasterd').with(
+    it do should contain_apache__vhost__ssl('puppetmasterd').with(
       'mode' => '2755',
       'user' => 'root'
     ) end
@@ -87,7 +87,7 @@ class ruby::passenger::apache {}
 
     it { should contain_apache__module('passenger') }
 
-    it do should contain_apache__vhost-ssl('puppetmasterd').with(
+    it do should contain_apache__vhost__ssl('puppetmasterd').with(
       'mode' => '2755',
       'user' => 'root'
     ) end
