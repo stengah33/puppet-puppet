@@ -3,9 +3,9 @@ require 'spec_helper'
 describe 'puppet::master::mongrel::standalone' do
   OSES.each do |os|
     describe "When on #{os} with mysql" do
-    let(:facts) { {
-      :operatingsystem => os
-    } }
+      let(:facts) { {
+        :operatingsystem => os
+      } }
 
       it do should contain_package('mongrel').with(
         'ensure' => 'present',
