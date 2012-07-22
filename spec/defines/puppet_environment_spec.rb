@@ -14,4 +14,14 @@ describe 'puppet::environment' do
     let(:params) { { :path => '/home/foo', :ensure => 'absent' } }
     it { should contain_augeas('remove environment foo').with_changes('rm /files/etc/puppet/puppet.conf/foo') }
   end
+
+  describe 'When wrong value' do
+    let(:title) { 'foo' }
+    let(:params) { { :path => '/home/foo', :ensure => 'running' } }
+    it do
+      expect {
+        should contain_puppet__config('foo/modulepath')
+      }.to raise_error(Puppet::Error, /Wrong ensure parameter: running/)
+    end
+  end
 end
