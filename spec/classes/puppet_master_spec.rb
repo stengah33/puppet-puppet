@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'puppet::master' do
 
-  if (Gem::Version.new(PUPPET_VERSION) > Gem::Version.new(2))
+  if (Gem::Version.new(PUPPETVERSION) > Gem::Version.new(2))
     master = 'master'
   else
     master = 'puppetmasterd'
@@ -12,7 +12,7 @@ describe 'puppet::master' do
     describe "When on #{os} with mysql" do
       let(:facts) { {
         :operatingsystem => os,
-        :puppetversion   => PUPPET_VERSION,
+        :puppetversion   => PUPPETVERSION,
         :puppetdbtype    => 'mysql',
         :puppetdbhost    => 'db.example.com',
         :puppetdbname    => 'puppetdb',
@@ -47,7 +47,7 @@ describe 'puppet::master' do
     describe "When on #{os} with sqlite" do
       let(:facts) { {
         :operatingsystem => os,
-        :puppetversion   => PUPPET_VERSION,
+        :puppetversion   => PUPPETVERSION,
         :puppetdbtype    => 'sqlite',
         :puppetdbhost    => 'db.example.com',
         :puppetdbname    => 'puppetdb',
@@ -80,7 +80,7 @@ describe 'puppet::master' do
     describe "When on #{os} with no puppetdbtype" do
       let(:facts) { {
         :operatingsystem => os,
-        :puppetversion   => PUPPET_VERSION,
+        :puppetversion   => PUPPETVERSION,
         :puppetdbtype    => nil,
       } }
 

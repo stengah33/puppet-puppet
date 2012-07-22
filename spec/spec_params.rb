@@ -3,11 +3,8 @@ end
 
 OSES = ['Debian', 'RedHat', 'Ubuntu', 'CentOS']
 
-if ENV.key?('PUPPET_VERSION')
-  PUPPET_VERSION = ENV['PUPPET_VERSION']
-else
-  PUPPET_VERSION = '2.7.17'
-end
+require 'puppet'
+PUPPETVERSION = Puppet::PUPPETVERSION.to_s
 
 VARS = {
   'Debian'             => {

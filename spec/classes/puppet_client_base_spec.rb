@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'puppet::client::base' do
 
-  if (Gem::Version.new(PUPPET_VERSION) > Gem::Version.new(2))
+  if (Gem::Version.new(PUPPETVERSION) > Gem::Version.new(2))
     agent = 'agent'
   else
     agent = 'puppetd'
@@ -11,7 +11,7 @@ describe 'puppet::client::base' do
   OSES.each do |os|
     describe "When on #{os} with mysql" do
       let(:facts) { { :operatingsystem     => os,
-                      :puppetversion       => PUPPET_VERSION,
+                      :puppetversion       => PUPPETVERSION,
                       :puppet_server       => 'pm.example.com',
                       :puppet_reportserver => 'reports.example.com',
                       :puppet_environment  => 'someuser'
