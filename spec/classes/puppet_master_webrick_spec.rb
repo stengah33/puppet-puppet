@@ -9,7 +9,7 @@ describe 'puppet::master::webrick' do
 
       it do should contain_augeas('configure puppetmaster startup variables').with(
         'context' => "/files#{VARS[os]['puppetmaster_default']}",
-        'changes' => VARS[os]['mongrel_settings']
+        'changes' => VARS[os]['webrick_settings']
       ) end
 
       it do should contain_service('puppetmaster').with(
