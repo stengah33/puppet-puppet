@@ -25,6 +25,7 @@ VARS = {
       'set SERVERTYPE webrick',
       'set PUPPETMASTERS 1'
     ],
+    'puppetd_pattern'      => 'ruby /usr/sbin/puppetd -w 0',
   },
 
   'RedHat' => {
@@ -44,6 +45,7 @@ VARS = {
       'set PUPPETMASTER_EXTRA_OPTS \'"--servertype=webrick"\'',
       'rm  PUPPETMASTER_PORTS'
     ],
+    'puppetd_pattern'      => '/usr/bin/ruby /usr/sbin/puppetd$',
   },
 }
 VARS['Ubuntu'] = VARS['Debian']
