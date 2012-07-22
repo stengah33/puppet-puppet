@@ -19,7 +19,7 @@ describe 'puppet::master::mongrel::standalone' do
       ) end
 
       it do should contain_augeas('configure puppetmaster startup variables').with(
-        'context' => "/files#{puppetmaster_default}",
+        'context' => "/files#{VARS[os]['puppetmaster_default']}",
         'changes' => VARS[os]['mongrel_settings']
       ) end
     end
